@@ -96,7 +96,7 @@ public final class BookTitle {
         }
     }
 
-    boolean hasNotificationFor(String username) {
+    public boolean hasNotificationFor(String username) {
         return notifiedBorrowers.contains(username);
     }
 

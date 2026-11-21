@@ -55,6 +55,10 @@ public final class LibrarySystem {
         return Optional.ofNullable(titles.get(title));
     }
 
+    public Optional<User> findUser(String username) {
+        return Optional.ofNullable(users.get(username));
+    }
+
     public Optional<User> authenticate(String username, String password) {
         User user = users.get(username);
         return user != null && user.passwordMatches(password) ? Optional.of(user) : Optional.empty();
@@ -108,6 +112,9 @@ public final class LibrarySystem {
 
     public BookCopy returnBook(String title) {
         Borrower borrower = requireBorrower();
+        if (borrower.getBorrowedBookCount() == 0) {
+            throw new LibraryException("No books are currently borrowed.");
+        }
         BookTitle bookTitle = requireTitle(title);
         BookCopy copy = borrower.returnBook(title);
         copy.returnToLibrary();
